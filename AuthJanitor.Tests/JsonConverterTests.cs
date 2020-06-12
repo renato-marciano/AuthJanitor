@@ -30,6 +30,29 @@ namespace AuthJanitor.Tests
             Assert.Equal(expected, tokenJson);
         }
 
+        [Fact]
+        public void JsonDeserializerShouldReturnNumberGivenNumber()
+        {
+            string jsonInput = "{\"MemberInt\":5,\"MemberLong\":1}";
+            TestPOCO deserializedDTO = JsonSerializer.Deserialize<TestPOCO>(jsonInput, GetSerializerOptions(true));
+
+            Assert.Equal(5, deserializedDTO.MemberInt);
+            Assert.Equal(1L, deserializedDTO.MemberLong);
+
+        }
+
+        [Fact]
+        public void JsonDeserializerShouldThrowGivenIncorrectValue()
+        {
+            String expectedExceptionMessage = "[5] is not a correct int value!";
+
+            string jsonInput = "{\"MemberInt\":\"[5]\",\"MemberLong\":\"1\"}";
+            Exception ex = Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<TestPOCO>(jsonInput, GetSerializerOptions(true)));
+
+            Assert.True(ex.InnerException is InvalidOperationException);
+            Assert.Equal(expectedExceptionMessage, ex.InnerException.Message);
+        }
+
         private JsonSerializerOptions GetSerializerOptions(bool writeAsString)
         {
             return new JsonSerializerOptions()
@@ -38,9 +61,9 @@ namespace AuthJanitor.Tests
             };
         }
 
-        private TestDTO SampleDTO()
+        private TestPOCO SampleDTO()
         {
-            return new TestDTO()
+            return new TestPOCO()
             {
                 MemberInt = 5,
                 MemberLong = 1L
@@ -49,7 +72,7 @@ namespace AuthJanitor.Tests
 
     }
 
-    public class TestDTO
+    public class TestPOCO
     {
         public int MemberInt { get; set; }
         public long MemberLong { get; set; }
