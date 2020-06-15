@@ -15,7 +15,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AuthJanitor.Integrations.CryptographicImplementations.Default\AuthJanitor.Integrations.CryptographicImplementations.Default.csproj" />
+<<<<<<< HEAD
     <ProjectReference Include="..\AuthJanitor.Integrations.IdentityServices.AzureActiveDirectory\AuthJanitor.Integrations.IdentityServices.AzureActiveDirectory.csproj" />
+=======
+>>>>>>> master
   </ItemGroup>
 
 </Project>
